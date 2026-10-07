@@ -214,4 +214,73 @@ causes it to be denied at the second level.**
 <img width="301" height="131" alt="656" src="https://github.com/user-attachments/assets/76401e5f-698a-4820-877e-39b928a1b8c7" />
 
  #### 3. Assignment
- 
+ ##### 3.3.1 Java Program Code
+import java.util.Scanner;
+
+public class Task2AssistantSelectionAttendanceNo {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("=== LAB ASSISTANT CANDIDATE SELECTION ===");
+        System.out.print("Student name                                   : ");
+        String name = input.nextLine();
+        System.out.print("Student status (active/inactive)               : ");
+        String status = input.nextLine();
+        System.out.print("Currently under academic sanction? (yes/no)    : ");
+        String sanction = input.nextLine();
+
+        boolean isActive = status.equalsIgnoreCase("active");
+        boolean underSanction = sanction.equalsIgnoreCase("yes");
+
+        System.out.println("\n--- SELECTION RESULT for " + name + " ---");
+
+        // Stage 1: administrative requirement
+        if (isActive && !underSanction) {
+
+            System.out.print("Basic Programming grade (0-100)                : ");
+            double grade = input.nextDouble();
+            input.nextLine(); // clear buffer
+            System.out.print("Has programming competency certificate? (yes/no): ");
+            boolean hasCertificate = input.nextLine().equalsIgnoreCase("yes");
+
+            // Stage 2: programming competency
+            if (grade >= 80 || hasCertificate) {
+
+                System.out.println("Stage 2 passed. The student is called for an interview.");
+                System.out.print("Interview score (0-100)                        : ");
+                double interviewScore = input.nextDouble();
+
+                // Stage 3: interview
+                if (interviewScore >= 75) {
+                    System.out.println("RESULT: ACCEPTED as lab assistant. Congratulations!");
+                } else {
+                    System.out.println("RESULT: NOT ACCEPTED.");
+                    System.out.println("Reason: Interview score (" + interviewScore + ") is below the minimum of 75.");
+                }
+
+            } else {
+                System.out.println("RESULT: NOT ACCEPTED.");
+                System.out.println("Reason: Basic Programming grade (" + grade
+                        + ") is below 80 and the student has no programming competency certificate.");
+            }
+
+        } else {
+            System.out.println("RESULT: NOT ELIGIBLE to take part in the selection.");
+            if (!isActive && underSanction) {
+                System.out.println("Reason: Student is not active and is currently under academic sanction.");
+            } else if (!isActive) {
+                System.out.println("Reason: Student status is not active.");
+            } else {
+                System.out.println("Reason: Student is currently under academic sanction.");
+            }
+        }
+
+        input.close();
+    }
+}
+
+#### 2.3.2 Hasil Running / Screenshot Output
+<img width="542" height="127" alt="657" src="https://github.com/user-attachments/assets/6e05956e-732b-411d-90a1-806bd4d7d3cc" />
+
+#### Conclusion
+In this practical session, I learned that nested selection statements let a program check dependent requirements level by level. An inner condition is evaluated only after the outer one is satisfied, and each level has its own else, so the program can show the exact reason for a failure, as in the thesis exam, laboratory access, and lab assistant selection programs. I also learned that the logical operators &&, ||, and ! combine several conditions into one expression, and that choosing the right operator matters because it changes the result (for example, replacing || with && in the WiFi program denied almost every user). Java's short-circuit evaluation skips the right operand when the left one already decides the result. Used together, nested if statements and logical operators make a program's decisions correct, concise, and easy to explain.
