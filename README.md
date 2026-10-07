@@ -51,11 +51,11 @@ public class NestedThesisExam264107020237 {
         System.out.println(message);
     }
 }
-#### 2.1.2 Hasil Running / Screenshot Output
+#### 2.1.3 Hasil Running / Screenshot Output
 Here is an example of what the output looks like after the program is run:
 <img width="338" height="122" alt="hjutr" src="https://github.com/user-attachments/assets/0b4d1613-e73b-4b3e-ae72-cc8f3b902a84" />
 
-#### 2.1.3 Questions
+#### 2.1.4 Questions
 ### Questions
 
 1. **What happens if the student answers "No" to the penalty-clearance question? Why?**
@@ -81,5 +81,137 @@ whether the user's account is currently blocked. Access is granted if the user i
 and the account is not blocked. This experiment practices the logical operators && (AND), || (OR), and
 ! (NOT).
 
-##### 2.1.2 Java Program Code
+##### 2.2.1 Java Program Code
 '''java
+import java.util.Scanner;
+
+    public class LogicalOperatorWifi264107020237 {
+        public static void main(String[] args) {
+            Scanner sc = new Scanner(System.in);
+
+            boolean isStudent;
+            boolean isLecturer;
+            boolean isBlocked;
+
+            System.out.print("Is the user a student? (true/false): ");
+            isStudent = sc.nextBoolean();
+
+            System.out.print("Is the user a lecturer? (true/false): ");
+            isLecturer = sc.nextBoolean();
+
+            System.out.print("Is the account currently blocked? (true/false): ");
+            isBlocked = sc.nextBoolean();
+
+            if ((isStudent || isLecturer) && !isBlocked) {
+             System.out.println("WiFi access granted");
+            } else {
+            System.out.println("WiFi access denied");
+            }
+        }
+#### 2.2.2 Hasil Running / Screenshot Output
+Here is an example of what the output looks like after the program is run:
+<img width="372" height="127" alt="you78" src="https://github.com/user-attachments/assets/be1ad723-5f41-4c0c-89ed-199c0cb5d5de" />
+
+#### 2.2.3 Questions
+### Questions
+
+**1. Function of the `||`, `&&`, and `!` operators**
+    * **Answer:** || (OR) is true if at least one operand is true. Here, isStudent || isLecturer is true if the user is a  student or a lecturer.
+&& (AND) is true only if both operands are true. Here, the "student/lecturer" condition and the "account not blocked" condition must both be satisfied.
+! (NOT) inverts a boolean value. !isBlocked is true when the account is not blocked (isBlocked = false).
+
+**2. Why can a lecturer still get access when `isStudent = false`?**
+Because the two conditions are joined with `||`, only one of them needs to be `true`. In test 2, `false || true` gives `true`. Since the account is not blocked, `!isBlocked` is also `true`, so `true && true` gives `true` and access is granted.
+
+**3. Changing `||` to `&&`**
+he condition becomes `(isStudent && isLecturer) && !isBlocked`.
+
+- Test 1: `true && false` = `false`, so the result is **denied**.
+- Test 2: `false && true` = `false`, so the result is **denied**.
+
+Users who were previously allowed are now rejected. With `&&`, a user must be a student **and** a lecturer at the same time, which is normally not the case, so almost everyone is denied. This shows that `||` is the correct operator for an "either one" requirement.
+
+**4. When does `isLecturer` not need to be evaluated? (short-circuit)**
+When **`isStudent` is `true`**. With `||`, if the left operand is already `true`, the whole expression must be `true` regardless of the right operand, so Java skips evaluating `isLecturer`. Examples are tests 1 and 3.
+
+**5. When does `!isBlocked` not need to be evaluated?**
+When **`(isStudent || isLecturer)` is `false`**, meaning both `isStudent` and `isLecturer` are `false` (for example, test 4). With `&&`, if the left operand is already `false`, the whole expression must be `false` regardless of the right operand. Java stops there and skips `!isBlocked`, going straight to the `else` block (**denied**).
+
+ #### 2.3 Experiment 3: Nested IF and Logical Operators to Determine Laboratory Access
+ 
+ A student may use the laboratory outside class hours if their status is active and they are not currently
+under sanction. If this requirement is met, the system performs a second check. Laboratory access is
+granted if the student has lecturer permission or is a lab assistant. This case combines nested selection
+with logical operators.
+
+##### 2.3.1 Java Program Code
+import java.util.Scanner;
+        
+        public class NestedLabAccess264107020237 {
+            public static void main(String[] args) {
+                Scanner sc = new Scanner(System.in);
+                boolean isActiveStudent;
+                boolean isSanctioned;
+                boolean hasLecturerPermit;
+                boolean isLabAssistant;
+
+                 System.out.print("Is active student (true/false): ");
+                 isActiveStudent = sc.nextBoolean();
+
+                 System.out.print("Is sanctioned (true/false): ");
+                 isSanctioned = sc.nextBoolean();
+
+                 System.out.print("Has lecturer permit (true/false): ");
+                 hasLecturerPermit = sc.nextBoolean();
+
+                System.out.print("Is lab assistant (true/false): ");
+                 isLabAssistant = sc.nextBoolean();
+
+                if (isActiveStudent && !isSanctioned) {
+                    if (hasLecturerPermit || isLabAssistant) {
+                        System.out.println("Laboratory access granted");
+                    } else {
+                         System.out.println("Access denied: lecturer permission or lab assistant status required");
+                    }
+                } else {
+                    System.out.println("Access denied: student status does not meet the requirement");
+                }
+
+                sc.close();
+             
+
+
+
+            }
+    
+}
+
+#### 2.3.2 Hasil Running / Screenshot Output
+<img width="269" height="149" alt="5432" src="https://github.com/user-attachments/assets/3db9b523-0452-43ee-b750-9e14bf3d6e52" />
+
+#### 2.3.3 Questions
+### Questions
+**1. Why is the check hasLecturerPermit || isLabAssistant placed inside the first IF?**
+The second check is only relevant for users who already meet the basic student requirement (active and not sanctioned). Placing it inside the first if means it runs only after that requirement is satisfied. A user who fails the first check is rejected immediately, and the permission check is never evaluated. This also matches the rule in the problem: "If this requirement is met, the system performs a second check."
+
+**2. Function of the &&, ||, and ! operators in this program**
+- && (AND) is true only if both operands are true. In isActiveStudent && !isSanctioned, the user must be an active student and not sanctioned.
+- || (OR) is true if at least one operand is true. In hasLecturerPermit || isLabAssistant, having either a lecturer permit or lab assistant status is enough.
+- ! (NOT) inverts a boolean value. !isSanctioned is true when the student is not sanctioned (isSanctioned = false).
+
+**3. Can the requirement be written as a single condition?**
+Yes. The condition isActiveStudent && !isSanctioned && (hasLecturerPermit || isLabAssistant) is logically equivalent for the access decision. Access is granted only when all three parts are true: the student is active, the student is not sanctioned, and the user has a lecturer permit or is a lab assistant. This is exactly what the nested version checks, so the final decision (granted or denied) stays the same for every input combination.
+The difference is that the single condition can only produce two outcomes: granted or denied. It cannot tell the user why access was denied.
+
+**4. What is the advantage of using Nested IF in this case, compared to a single IF, if the system
+needs to show different reasons for denial?**
+Nested IF separates the checks into levels, and each level has its own else branch with its own message:
+- If the first level fails, the system reports that the student status does not meet the requirement.
+- If the first level passes but the second fails, the system reports that lecturer permission or lab assistant status is required.
+
+**5.Create one input combination that causes access to be denied at the first level, and one that
+causes it to be denied at the second level.**
+<img width="301" height="131" alt="656" src="https://github.com/user-attachments/assets/76401e5f-698a-4820-877e-39b928a1b8c7" />
+
+ #### 3. Assignment
+ 
